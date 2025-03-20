@@ -1,3 +1,3 @@
-# Test Page
+# ✅ Test Page
 
-If you're seeing this, the sidebar is working!
+This is a working sidebar test page.
