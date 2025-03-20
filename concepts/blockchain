@@ -8,11 +8,11 @@ This Proof of Concept (PoC) introduces a blockchain-integrated data validation p
 
 The solution leverages Azure cloud services and an Ethereum-compatible blockchain to deliver:
 
-✅ SHA-256 hashed, tamper-evident records  
-✅ Daily Merkle tree sealing with blockchain anchoring  
-✅ Scalable per-client access via Cosmos DB partitioning  
-✅ Blazor dashboard for record visibility and validation  
-✅ Regulation-level queries for audit/reporting (e.g., PAS 2060)
+- ✅ SHA-256 hashed, tamper-evident records  
+- ✅ Daily Merkle tree sealing with blockchain anchoring  
+- ✅ Scalable per-client access via Cosmos DB partitioning  
+- ✅ Blazor dashboard for record visibility and validation  
+- ✅ Regulation-level queries for audit/reporting (e.g., PAS 2060)
 
 Every state change is hashed, stored, optionally archived in Blob, and cryptographically anchored for transparent, client/auditor-facing verification.
 
@@ -31,78 +31,83 @@ Every state change is hashed, stored, optionally archived in Blob, and cryptogra
 
 ## 🔐 1. Premium Data Integrity Add-on
 
-| Client Value                | Pricing Model           |
-|----------------------------|--------------------------|
-| Verifiable SLA/waste records | +5–10% contract uplift |
-| Tamper-evident audit trails | £10k–15k/year license  |
-| Report-linkable records     | Per department/site bundle |
+| Client Value                 | Pricing Model               |
+|-----------------------------|-----------------------------|
+| Verifiable SLA/waste records| +5–10% contract uplift       |
+| Tamper-evident audit trails | £10k–15k/year license        |
+| Report-linkable records     | Per department/site bundle  |
 
 ## 📊 2. Audit Reporting Module
 
-| Feature                    | Charge Model        |
-|----------------------------|---------------------|
-| Merkle proof PDFs          | Per audit/report    |
-| Certificate hash validation | Per file            |
-| API access for third-party | Tiered per access level |
+| Feature                     | Charge Model               |
+|-----------------------------|-----------------------------|
+| Merkle proof PDFs           | Per audit/report           |
+| Certificate hash validation | Per file                   |
+| API access for third-party  | Tiered per access level    |
 
 ## 🧑‍💼 3. Client Verifier Node
 
-| Value Provided            | Pricing             |
-|---------------------------|---------------------|
-| Full independence         | £5k–10k/year        |
-| Local validation of hashes | Optional SLA support |
+| Value Provided              | Pricing                    |
+|-----------------------------|-----------------------------|
+| Full independence           | £5k–10k/year               |
+| Local validation of hashes  | Optional SLA support       |
 
 ## 🔁 4. Subscription Model
 
-| Tier         | Features Included                          | Monthly Price |
-|--------------|---------------------------------------------|---------------|
-| Basic        | Sealed record access, UI validation         | £500          |
-| Compliance Plus | Audit exports, SLA timelines            | £1,250        |
-| Enterprise   | Verifier node, API access, onboarding support | £2,000+     |
+| Tier            | Features Included                               | Monthly Price |
+|------------------|---------------------------------------------------|----------------|
+| Basic           | Sealed record access, UI validation              | £500           |
+| Compliance Plus | Audit exports, SLA timelines                     | £1,250         |
+| Enterprise      | Verifier node, API access, onboarding support    | £2,000+        |
 
 ## 🌍 5. ESG Certification Partner Support
 
 - Enable PAS 2060 / ISO 14001 / Carbon Trust verification  
-- Blockchain-sealed logs for emissions, waste, fuel usage  
+- Blockchain-sealed logs for emissions, waste, fuel usage
 
 ---
 
 # 📈 Example: Tesco Contract
 
-| Item                  | Value            |
-|-----------------------|------------------|
-| Base Contract         | £500,000/year    |
-| Blockchain Add-on (+10%) | £50,000       |
-| Compliance Module     | £10,000          |
-| ESG Proof Export      | £15,000          |
-| **Total Uplift**      | **£75,000/year** |
+| Item                 | Value           |
+|----------------------|-----------------|
+| Base Contract        | £500,000/year   |
+| Blockchain Add-on    | £50,000         |
+| Compliance Module    | £10,000         |
+| ESG Proof Export     | £15,000         |
+| **Total Uplift**     | **£75,000/year** |
 
 ---
 
 # 🏗️ Solution Architecture
 
-1. **Blockchain Node (Docker/Besu)**
-   - Private Ethereum-compatible chain  
-   - Anchors Merkle roots daily  
-   - Genesis-configured for client node extensibility  
+### 1. Blockchain Node (Docker/Besu)
 
-2. **Azure Function Apps**
-   - **Writer**: Subscribes to events, retrieves full record, hashes and stores in Cosmos + Blob  
-   - **Validator**: Builds Merkle tree from sealed records, stores root on chain  
+- Private Ethereum-compatible chain  
+- Anchors Merkle roots daily  
+- Genesis-configured for client node extensibility  
 
-3. **Cosmos DB**
-   - Hash/metadata store  
-   - Partitioned by client|date  
-   - Indexed by regulation, recordType, sealed  
+### 2. Azure Function Apps
 
-4. **Azure Blob Storage**
-   - Stores JSON record snapshots and certifications  
-   - Fingerprinted and optionally archived  
+- **Writer**: Subscribes to events, retrieves full record, hashes and stores in Cosmos + Blob  
+- **Validator**: Builds Merkle tree from sealed records, stores root on chain  
 
-5. **Blazor Dashboard**
-   - Secure, role-based access  
-   - Record viewer with proof validation  
-   - Client and auditor views  
+### 3. Cosmos DB
+
+- Hash/metadata store  
+- Partitioned by `client|date`  
+- Indexed by regulation, recordType, sealed  
+
+### 4. Azure Blob Storage
+
+- Stores JSON record snapshots and certifications  
+- Fingerprinted and optionally archived  
+
+### 5. Blazor Dashboard
+
+- Secure, role-based access  
+- Record viewer with proof validation  
+- Client and auditor views  
 
 ---
 
@@ -112,7 +117,8 @@ Every state change is hashed, stored, optionally archived in Blob, and cryptogra
 - Daily (or hourly) Merkle root sealing  
 - Blockchain anchoring for audit integrity  
 
-**Cosmos stores:**
+Stored in Cosmos:
+
 - `hash`  
 - `sealed`  
 - `merkleRoot`  
@@ -127,34 +133,4 @@ Every state change is hashed, stored, optionally archived in Blob, and cryptogra
 - `X-Leaf-Hash`  
 - `X-Merkle-Root`  
 - `X-Sealed`  
-- `X-Merkle-Proof-URL` (optional)
-
-Records can be independently validated.
-
----
-
-# 🗂️ Partitioning Strategy
-
-- **Partition Key**: `client|date`  
-- Enables batching + fast access  
-- Cosmos queries use regulation/date filters  
-
----
-
-# 👥 Roles & Access Control
-
-| Role     | Access Scope                                |
-|----------|---------------------------------------------|
-| Client   | Partition-based (only their records)        |
-| Auditor  | Cross-client by regulation and sealed       |
-| Internal | Full access, admin, manual override         |
-
----
-
-# 💰 Financial Impact
-
-| Item           | Value              |
-|----------------|--------------------|
-| PoC Cost       | £20,000–30,000     |
-| Full Rollout   | £50,000–75,000     |
-| Revenue Uplift | +5–15%
+- `X-Merkle-Proof-URL`
