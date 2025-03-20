@@ -1,0 +1,25 @@
+# 👨‍💻 Engineering Handbook
+
+This repository contains the core development standards, PR guidelines, and architectural workflow diagrams for the Synapsia team.
+
+## 📐 Coding Standards
+
+- Follow `.editorconfig` for formatting
+- PRs must include a checklist (see below)
+- Linting rules enforced via GitHub Actions
+
+## 📊 Workflow Diagram
+
+```mermaid
+graph TD;
+  Dev[Developer] --> PR[Pull Request]
+  PR --> CI[Lint & Test]
+  CI --> Review[Code Review]
+  Review --> Merge[Merge to Main]
+```
+
+## ✅ PR Checklist
+
+- [ ] Code adheres to formatting rules
+- [ ] Unit/integration tests pass
+- [ ] Mermaid diagram updated (if applicable)
